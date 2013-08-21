@@ -38,7 +38,7 @@ node 'organist' {
     class { 'nginx':  }
 
     class { 'organist':
-        require => Class['nginx']
+        require => Class['nginx', 'anyterm']
     }
 
     class { 'netvlies':  }

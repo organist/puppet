@@ -35,13 +35,31 @@ class organist::install {
         creates => "/usr/lib/ruby/gems/1.8/specifications/capistrano-ext-1.2.1.gemspec"
     }
 
-#    Cant be done due to private repo
-#    exec { "/home/deploy/install.sh":
-#        provider => shell,
-#        path => "/usr/bin:/usr/sbin:/bin",
-#        creates => "/home/deploy/organist/vendor",
-#        user => deploy
-#    }
+    exec { "organistInstall":
+        command => "/home/deploy/install_organist.sh",
+        provider => shell,
+        path => "/usr/bin:/usr/sbin:/bin",
+        creates => "/home/deploy/organist/vendor",
+        user => deploy
+    }
+
+    exec { "oganistVendors":
+        command => "/home/deploy/install_vendors.sh",
+        provider => shell,
+        path => "/usr/bin:/usr/sbin:/bin",
+        creates => "/home/deploy/organist/vendor",
+        user => deploy,
+        require => Exec["installOrganist"]
+    }
+
+    exec { "organistAnyterm":
+        command => "/home/deploy/install_anytermservice.sh",
+        provider => shell,
+        path => "/usr/bin:/usr/sbin:/bin",
+        creates => "/home/deploy/organist/vendor",
+        user => vagrant,
+        require => Exec["oganistVendors"]
+    }
 
 
     # Anyterm port
