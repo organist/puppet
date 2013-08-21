@@ -49,7 +49,7 @@ class organist::install {
         path => "/usr/bin:/usr/sbin:/bin",
         creates => "/home/deploy/organist/vendor",
         user => deploy,
-        require => Exec["installOrganist"]
+        require => Exec["organistInstall"]
     }
 
     exec { "organistAnyterm":
