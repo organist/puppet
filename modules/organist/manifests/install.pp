@@ -39,7 +39,7 @@ class organist::install {
         command => "/home/deploy/install_organist.sh",
         provider => shell,
         path => "/usr/bin:/usr/sbin:/bin",
-        creates => "/home/deploy/organist/vendor",
+        creates => "/home/deploy/organist/src",
         user => deploy
     }
 
@@ -56,7 +56,7 @@ class organist::install {
         command => "/home/deploy/install_anytermservice.sh",
         provider => shell,
         path => "/usr/bin:/usr/sbin:/bin",
-        creates => "/home/deploy/organist/vendor",
+        creates => "/etc/init.d/anyterm",
         user => vagrant,
         require => Exec["oganistVendors"]
     }
