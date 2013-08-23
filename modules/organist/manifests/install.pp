@@ -48,7 +48,7 @@ class organist::install {
         path => "/usr/bin:/usr/sbin:/bin",
         creates => "/home/deploy/organist/src",
         user => deploy,
-        require => Mysql::db["organist"]
+        require => Mysql::Db["organist"]
     }
 
     exec { "oganistVendors":
