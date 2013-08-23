@@ -18,31 +18,21 @@ node 'organist' {
         ]
     }
 
-#    class { 'php':  }
-#    class { 'mysql':  }
+    class { 'php':  }
+    class { 'mysql':  }
 
     class { 'mysql::server':
         config_hash => { 'root_password' => 'vagrant' }
     }
 
-#    class { 'anyterm':  }
+    class { 'anyterm':  }
 
     class { 'nginx':
         require => Class['php'],
     }
 
-    class createdb {
-        mysql::db { 'vagrant':
-            user     => 'vagrant',
-            password => 'vagrant',
-            host     => 'localhost',
-            grant    => ['all'],
-            require => Class['mysql::server']
-        }
-    }
-
     class { 'organist':
-        require => Class['nginx', 'anyterm', 'createdb', 'mysql']
+        require => Class['nginx', 'anyterm', 'mysql', 'mysql::server']
     }
 
     class { 'netvlies':  }

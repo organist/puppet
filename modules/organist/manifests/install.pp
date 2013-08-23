@@ -35,12 +35,20 @@ class organist::install {
         creates => "/usr/lib/ruby/gems/1.8/specifications/capistrano-ext-1.2.1.gemspec"
     }
 
+    mysql::db { 'organist':
+        user     => 'vagrant',
+        password => 'vagrant',
+        host     => 'localhost',
+        grant    => ['all']
+    }
+
     exec { "organistInstall":
         command => "/home/deploy/install_organist.sh",
         provider => shell,
         path => "/usr/bin:/usr/sbin:/bin",
         creates => "/home/deploy/organist/src",
-        user => deploy
+        user => deploy,
+        require => Mysql::db["organist"]
     }
 
     exec { "oganistVendors":
