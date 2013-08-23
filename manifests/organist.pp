@@ -2,7 +2,7 @@
 node 'organist' {
 
     stage { 'setup-repos':
-        before => Stage['main'],
+        before => Stage['main']
     }
 
     class { 'system':
@@ -18,27 +18,31 @@ node 'organist' {
         ]
     }
 
-    class { 'php':  }
-
-    class { 'mysql':  }
+#    class { 'php':  }
+#    class { 'mysql':  }
 
     class { 'mysql::server':
         config_hash => { 'root_password' => 'vagrant' }
     }
 
-    mysql::db { 'vagrant':
-        user     => 'vagrant',
-        password => 'vagrant',
-        host     => 'localhost',
-        grant    => ['all'],
+#    class { 'anyterm':  }
+
+    class { 'nginx':
+        require => Class['php'],
     }
 
-    class { 'anyterm':  }
-
-    class { 'nginx':  }
+    class createdb {
+        mysql::db { 'vagrant':
+            user     => 'vagrant',
+            password => 'vagrant',
+            host     => 'localhost',
+            grant    => ['all'],
+            require => Class['mysql::server']
+        }
+    }
 
     class { 'organist':
-        require => Class['nginx', 'anyterm']
+        require => Class['nginx', 'anyterm', 'createdb', 'mysql']
     }
 
     class { 'netvlies':  }
